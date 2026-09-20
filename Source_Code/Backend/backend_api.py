@@ -253,7 +253,8 @@ def get_strong_knowledge_match(question):
         "placements": "placements",
         "examination": "examinations",
         "examinations": "examinations",
-        "exam": "examinations"
+        "exam": "examinations",
+        "contact": "contact"
     }
 
     if normalized_question in category_aliases:

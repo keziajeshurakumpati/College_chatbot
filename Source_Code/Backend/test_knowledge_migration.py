@@ -20,12 +20,12 @@ class KnowledgeMigrationTests(unittest.TestCase):
     def test_major_categories_return_rich_backend_knowledge(self):
         cases = [
             ("How do I apply for admission?", "admissions", "Admission"),
-            ("What courses are offered?", "courses", "academic areas"),
-            ("What are the fees?", "fees", "Fees depend"),
+            ("What courses are offered?", "courses", "undergraduate"),
+            ("What are the fees?", "fees", "B.Tech CSE tuition"),
             ("What are the eligibility criteria?", "eligibility", "Eligibility"),
             ("What scholarships are available?", "scholarships", "scholarship"),
-            ("Tell me about hostel accommodation", "hostel", "hostel accommodation"),
-            ("What is the placement percentage?", "placements", "Training and Placement"),
+            ("Tell me about hostel accommodation", "hostel", "on-campus hostels"),
+            ("What is the placement percentage?", "placements", "recruiting organizations"),
             ("What is the exam grading system?", "examinations", "relative grading"),
         ]
 
