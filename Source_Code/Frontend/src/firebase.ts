@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCMJkpcWO1ORWKig7Cr6hPD_xDsTc2UhXM",
-  authDomain: "galgotias-university-chatbot.firebaseapp.com",
-  projectId: "galgotias-university-chatbot",
-  storageBucket: "galgotias-university-chatbot.firebasestorage.app",
-  messagingSenderId: "593437676145",
-  appId: "1:593437676145:web:e95eb6c2e95147e1dbc1d0",
+  apiKey: "AIzaSyB10zwRdrXG6RPiONLI8ddd92OQO6id9f4",
+  authDomain: "college-enquiry-chatbot-66646.firebaseapp.com",
+  projectId: "college-enquiry-chatbot-66646",
+  storageBucket: "college-enquiry-chatbot-66646.firebasestorage.app",
+  messagingSenderId: "177141746624",
+  appId: "1:177141746624:web:e8f6029e25d48872845625",
 };
 
 const app = initializeApp(firebaseConfig);
