@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "id": "admissions",
+      "category": "admissions",
+      "title": "Admission Process",
+      "keywords": ["admission", "admissions", "apply", "application", "registration", "register", "counselling", "documents", "deadline", "entrance exam", "btech admission", "b tech admission"],
+      "patterns": ["how to apply", "admission process", "how can i take admission", "admission form", "apply online", "steps for admission", "admission deadline", "important dates for admission", "btech admission", "b tech admission"],
+      "response": "Admissions at Galgotias University generally begin with online registration through the official admission portal. Select the programme, complete the personal and academic details, upload the documents requested for that programme, review the application, and submit it. Further steps depend on the programme and may include an applicable entrance examination, merit evaluation, document verification, and fee payment.\n\nFor current deadlines, programme-specific requirements, and the applicable entrance route, use the official university admission information because these details can change.",
+      "follow_ups": ["What documents are needed for admission?", "What are the eligibility criteria for B.Tech?", "What is the application fee?"]
+    },
+    {
+      "id": "courses",
+      "category": "courses",
+      "title": "Academic Programs and Specializations",
+      "keywords": ["courses", "course", "programs", "programmes", "degrees", "branches", "specializations", "btech", "b tech", "bca", "mca", "mba", "mtech", "phd"],
+      "patterns": ["what courses are offered", "list of programs", "available branches", "btech courses", "postgraduate courses", "engineering degrees", "what can i study", "programme list"],
+      "response": "Galgotias University offers programmes across multiple academic areas and levels, including engineering and technology, computer applications, management, law, science, design, agriculture, hospitality, media, pharmacy, and other disciplines. Options include undergraduate, postgraduate, diploma, certificate, and PhD-level study.\n\nComputer-focused options include B.Tech in Computer Science and Engineering, BCA, MCA, and related specializations. B.Tech CSE specializations listed in the available university information include Artificial Intelligence and Machine Learning, Data Science, Cyber Security, and Internet of Things. The current programme listing should be checked for the exact course, duration, intake, and entry requirements.",
+      "follow_ups": ["What are the B.Tech CSE specializations?", "What are the eligibility criteria?", "What are the fees?"]
+    },
+    {
+      "id": "fees",
+      "category": "fees",
+      "title": "Fees and Payment Information",
+      "keywords": ["fee", "fees", "tuition", "cost", "expenses", "installment", "payment", "charges", "btech fees", "course fees"],
+      "patterns": ["what are the fees", "tuition fees", "fee structure", "how much does it cost", "btech fees", "b tech fees", "installment payment", "annual tuition"],
+      "response": "Fees depend on the programme and applicable category. The current official fee information should be checked for the exact tuition, examination, registration, hostel, and other charges.\n\nWhere installment payment is available, follow the payment schedule and instructions published by the university for the selected programme. Do not rely on an older fee table because amounts and applicable charges can change between admission cycles.",
+      "follow_ups": ["What is the fee refund policy?", "What scholarships are available?", "How do I apply for admission?"]
+    },
+    {
+      "id": "eligibility",
+      "category": "eligibility",
+      "title": "Eligibility Criteria",
+      "keywords": ["eligibility", "eligible", "criteria", "qualification", "percentage", "marks", "pcm", "cutoff", "jee", "minimum marks", "lateral entry"],
+      "patterns": ["what are the eligibility criteria", "who is eligible", "minimum marks", "cutoff for cse", "eligibility for mca", "lateral entry eligibility", "can diploma students join 2nd year"],
+      "response": "Eligibility is programme-specific. Applicants should check the selected programme's required educational qualification, subjects, minimum marks, and any entrance examination or merit requirement before applying.\n\nExamples from the verified university information include: B.Tech applicants need the relevant Class 12 subjects and must meet the university's minimum percentage requirements through the applicable GUEE or JEE Main route; MBA applicants need a bachelor's degree and an accepted entrance score; PhD applicants generally need a relevant master's degree and PET or an accepted national-level score. Exact criteria should be confirmed from the current official programme information.",
+      "follow_ups": ["What is the minimum eligibility for B.Tech?", "Which entrance exam is used for MBA admission?", "How do I apply for admission?"]
+    },
+    {
+      "id": "scholarships",
+      "category": "scholarships",
+      "title": "Scholarships and Financial Aid",
+      "keywords": ["scholarship", "scholarships", "financial aid", "fee waiver", "concession", "merit", "sports quota", "girls", "government scholarship"],
+      "patterns": ["what scholarships are available", "scholarship criteria", "how to get scholarship", "merit scholarship", "need based financial aid", "fee concession"],
+      "response": "Galgotias University may offer scholarship or fee-concession schemes based on factors such as academic merit, entrance performance, category, sports achievement, or other published eligibility conditions. Availability, amount, continuation rules, and application documents depend on the current scheme.\n\nReview the university's official scholarship information for the selected admission cycle and submit the required proof through the prescribed process. Scholarship benefits should not be assumed without confirmation of the applicable programme and category.",
+      "follow_ups": ["How do I apply for admission?", "What are the fees?", "What are the eligibility criteria?"]
+    },
+    {
+      "id": "hostel",
+      "category": "hostel",
+      "title": "Hostel and Accommodation",
+      "keywords": ["hostel", "hostels", "accommodation", "room", "rooms", "mess", "food", "curfew", "stay", "ac room", "non ac", "boarding"],
+      "patterns": ["tell me about hostel accommodation", "hostel fee", "hostel fees", "hostel facilities", "is food provided in hostel", "hostel timings and rules", "girls hostel and boys hostel", "campus accommodation"],
+      "response": "Galgotias University provides hostel accommodation options, including AC and non-AC room categories. Hostel arrangements can include residential rooms, dining or mess services, campus facilities, and residence rules. Availability, room type, fees, meal arrangements, security provisions, and in-time rules depend on the current hostel policy and allocation.\n\nFor the current charges and exact facilities, check the official hostel information or contact the university before booking accommodation.",
+      "follow_ups": ["What are the fees?", "How do I apply for admission?", "What facilities are available on campus?"]
+    },
+    {
+      "id": "placements",
+      "category": "placements",
+      "title": "Placements and Career Support",
+      "keywords": ["placement", "placements", "salary", "package", "highest package", "average package", "companies", "recruiters", "job", "career", "internship"],
+      "patterns": ["what are the placement statistics", "highest placement package", "average salary package", "top companies visiting college", "placement percentage", "internship opportunities"],
+      "response": "Galgotias University has a Training and Placement function that supports eligible students through recruitment activities, career guidance, employer interaction, and internship or placement opportunities. Placement outcomes vary by programme, graduating batch, eligibility, and participating employer.\n\nFor the latest placement percentage, highest package, average package, recruiter list, and internship details, consult the university's current official placement report rather than relying on an older figure.",
+      "follow_ups": ["What courses are offered?", "What are the B.Tech CSE specializations?", "What scholarships are available?"]
+    },
+    {
+      "id": "examinations",
+      "category": "examinations",
+      "title": "Examinations, Grading, and Results",
+      "keywords": ["exam", "exams", "examination", "semester", "cgpa", "sgpa", "grading", "backlog", "revaluation", "hall ticket", "results", "attendance"],
+      "patterns": ["when are semester examinations", "how does the cgpa grading system work", "process for exam re evaluation", "how to download hall ticket", "supplementary exam rules", "exam grading system", "how do exams work"],
+      "response": "Examination rules, assessment components, grading, attendance requirements, results, and revaluation are governed by the university's current academic and Examination Cell regulations. Verified university information states that students generally need the required attendance for eligibility to appear in examinations, and that revaluation requests for theory courses can be submitted with the prescribed fee within the notified deadline.\n\nThe university uses a relative grading system. For the current date sheet, hall-ticket process, grade scale, CGPA or SGPA rules, backlog procedure, and applicable marks distribution, use the official Examination Cell or authorised student portal information.",
+      "follow_ups": ["How can I check my exam results?", "How do I apply for revaluation?", "What are the eligibility criteria?"]
+    },
+    {
+      "id": "contact",
+      "category": "admissions",
+      "title": "University Contact Information",
+      "keywords": ["contact", "phone", "email", "helpline", "location", "address", "visit", "admission office"],
+      "patterns": ["how to contact the admission office", "phone number of college", "campus location address", "admission helpline email", "where is galgotias university"],
+      "response": "Galgotias University's address is Plot No. 2, Sector 17-A, Yamuna Expressway, Greater Noida, Uttar Pradesh 203201. For current admission, examination, hostel, and placement contact details, use the official university website or the relevant university office directory.",
+      "follow_ups": ["How do I apply for admission?", "What courses are offered?", "What are the fees?"]
+    },
+    {
+      "id": "fee_refund",
+      "category": "fees",
+      "title": "Fee Refund and Cancellation",
+      "keywords": ["refund", "cancellation", "money back", "withdraw admission", "fee return"],
+      "patterns": ["what is the fee refund policy", "can i get a refund if i cancel", "admission withdrawal policy"],
+      "response": "Fee refunds and admission cancellation are governed by the university's current refund policy and applicable regulatory guidelines. Submit a cancellation or refund request through the prescribed university process, within the stated deadline, with the required bank and admission details. The refundable amount can depend on the date of withdrawal, services already used, and the applicable policy for the programme and admission cycle.",
+      "follow_ups": ["What are the fees?", "How do I apply for admission?", "What scholarships are available?"]
+    }
+  ]
+}

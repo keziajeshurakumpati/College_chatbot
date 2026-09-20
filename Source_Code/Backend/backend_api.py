@@ -2,12 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 import joblib
+import json
 import pandas as pd
 import os
 import re
 
 from dotenv import load_dotenv
-from groq import Groq
 
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -161,47 +161,197 @@ print(
 
 
 # ============================================================
-# GROQ SETUP
+# BACKEND KNOWLEDGE BASE
 # ============================================================
 
-GROQ_API_KEY = os.getenv(
-    "GROQ_API_KEY"
+knowledge_base_path = os.path.join(
+    BASE_DIR,
+    "knowledge_base.json"
 )
 
+with open(knowledge_base_path, "r", encoding="utf-8") as knowledge_file:
+    knowledge_base = json.load(knowledge_file)
 
+knowledge_topics = knowledge_base.get("topics", [])
+
+if not knowledge_topics:
+    raise ValueError("Knowledge base does not contain any topics")
+
+knowledge_corpus = [
+    " ".join([
+        topic["category"],
+        topic["title"],
+        " ".join(topic.get("keywords", [])),
+        " ".join(topic.get("patterns", [])),
+        topic["response"],
+        " ".join(topic.get("follow_ups", []))
+    ])
+    for topic in knowledge_topics
+]
+
+knowledge_vectors = vectorizer.transform(knowledge_corpus)
+
+print("Backend knowledge base loaded:", len(knowledge_topics), "topics")
+
+# Groq is intentionally disabled. Answers come from local verified data.
 groq_client = None
 
 
-if GROQ_API_KEY:
+# ============================================================
+# KNOWLEDGE BASE MATCHING
+# ============================================================
 
-    try:
+def get_knowledge_tokens(text):
+    stop_words = {
+        "a", "an", "the", "is", "are", "was", "were", "do", "does", "did",
+        "can", "could", "i", "you", "me", "my", "to", "for", "of", "in",
+        "on", "at", "and", "or", "with", "what", "how", "when", "where",
+        "please", "tell", "about", "much", "university"
+    }
+    return {
+        token
+        for token in normalize_question(text).split()
+        if len(token) > 2 and token not in stop_words
+    }
 
-        groq_client = Groq(
-
-            api_key=GROQ_API_KEY
-
-        )
-
-
-        print(
-            "Groq Connected Successfully!"
-        )
-
-
-    except Exception as e:
-
-        print(
-            "Groq Connection Error:",
-            str(e)
-        )
-
-
-else:
-
-    print(
-        "WARNING: GROQ_API_KEY not found."
+def get_knowledge_topic(topic_id):
+    return next(
+        (topic for topic in knowledge_topics if topic["id"] == topic_id),
+        None
     )
 
+def make_knowledge_response(topic, confidence, method, similarity=None):
+    result = {
+        "intent": topic["category"],
+        "response": topic["response"],
+        "confidence": round(float(confidence), 4),
+        "source": "Backend Knowledge Base",
+        "matching_method": method,
+        "related_questions": topic.get("follow_ups", [])
+    }
+
+    if similarity is not None:
+        result["similarity"] = round(float(similarity), 4)
+
+    return result
+
+def get_strong_knowledge_match(question):
+    normalized_question = normalize_question(question)
+
+    category_aliases = {
+        "admission": "admissions",
+        "admissions": "admissions",
+        "course": "courses",
+        "courses": "courses",
+        "fee": "fees",
+        "fees": "fees",
+        "eligibility": "eligibility",
+        "scholarship": "scholarships",
+        "scholarships": "scholarships",
+        "hostel": "hostel",
+        "placement": "placements",
+        "placements": "placements",
+        "examination": "examinations",
+        "examinations": "examinations",
+        "exam": "examinations"
+    }
+
+    if normalized_question in category_aliases:
+        topic = get_knowledge_topic(category_aliases[normalized_question])
+        if topic:
+            return make_knowledge_response(
+                topic,
+                0.98,
+                "category_exact_match"
+            )
+
+    best_topic = None
+    best_score = 0.0
+
+    for topic in knowledge_topics:
+        score = 0.0
+
+        for pattern in topic.get("patterns", []):
+            normalized_pattern = normalize_question(pattern)
+            if normalized_question == normalized_pattern:
+                score += 10.0
+            elif normalized_pattern in normalized_question:
+                score += 6.0 + min(len(normalized_pattern.split()), 4) * 0.25
+
+        for keyword in topic.get("keywords", []):
+            normalized_keyword = normalize_question(keyword)
+            if normalized_keyword in normalized_question:
+                score += 2.0 if len(normalized_keyword.split()) > 1 else 1.0
+
+        question_tokens = get_knowledge_tokens(normalized_question)
+        keyword_tokens = get_knowledge_tokens(" ".join(topic.get("keywords", [])))
+        score += min(len(question_tokens & keyword_tokens), 3) * 0.5
+
+        if score > best_score:
+            best_score = score
+            best_topic = topic
+
+    if best_topic and best_score >= 2.5:
+        confidence = min(0.97, 0.70 + best_score / 30.0)
+        return make_knowledge_response(
+            best_topic,
+            confidence,
+            "pattern_keyword_match"
+        )
+
+    return None
+
+def get_similar_knowledge_response(question):
+    try:
+        question_vector = vectorizer.transform([question])
+        similarities = cosine_similarity(question_vector, knowledge_vectors)[0]
+        best_index = similarities.argmax()
+        best_score = float(similarities[best_index])
+        best_topic = knowledge_topics[best_index]
+
+        query_tokens = get_knowledge_tokens(question)
+        topic_tokens = get_knowledge_tokens(
+            " ".join([
+                best_topic["title"],
+                " ".join(best_topic.get("keywords", [])),
+                " ".join(best_topic.get("patterns", []))
+            ])
+        )
+
+        if best_score >= 0.82 and query_tokens & topic_tokens:
+            return make_knowledge_response(
+                best_topic,
+                best_score,
+                "knowledge_tfidf_similarity",
+                best_score
+            )
+
+    except Exception as error:
+        print("KNOWLEDGE SIMILARITY ERROR:", str(error))
+
+    return None
+
+def get_knowledge_response_for_intent(intent):
+    intent_map = {
+        "admission": "admissions",
+        "course": "courses",
+        "fees": "fees",
+        "fee": "fees",
+        "eligibility": "eligibility",
+        "scholarship": "scholarships",
+        "hostel": "hostel",
+        "placement": "placements",
+        "examination": "examinations"
+    }
+    topic = get_knowledge_topic(intent_map.get(intent, intent))
+    if topic:
+        return make_knowledge_response(
+            topic,
+            0.60,
+            "logistic_regression_intent"
+        )
+
+    return None
 
 # ============================================================
 # SETTINGS
@@ -1369,7 +1519,44 @@ def predict():
 
 
         # ====================================================
-        # STEP 2: EXACT DATASET MATCH
+        # STEP 2: RICH KNOWLEDGE BASE MATCH
+        # ====================================================
+
+        strong_knowledge_match = get_strong_knowledge_match(
+            user_question
+        )
+
+        if strong_knowledge_match:
+            print(
+                "RICH KNOWLEDGE MATCH:",
+                strong_knowledge_match["matching_method"]
+            )
+
+            return jsonify({
+                "success": True,
+                "question": user_question,
+                **strong_knowledge_match
+            })
+
+        similar_knowledge_match = get_similar_knowledge_response(
+            user_question
+        )
+
+        if similar_knowledge_match:
+            print(
+                "RICH KNOWLEDGE TF-IDF MATCH:",
+                similar_knowledge_match["similarity"]
+            )
+
+            return jsonify({
+                "success": True,
+                "question": user_question,
+                **similar_knowledge_match
+            })
+
+
+        # ====================================================
+        # STEP 3: EXACT DATASET MATCH
         # ====================================================
 
         exact_match = (
@@ -1682,18 +1869,12 @@ def predict():
         if confidence >= ML_THRESHOLD:
 
 
-            response = (
-
-                get_dataset_response(
-
-                    intent
-
-                )
-
+            knowledge_response = get_knowledge_response_for_intent(
+                intent
             )
 
 
-            if response:
+            if knowledge_response:
 
 
                 print(
@@ -1705,7 +1886,7 @@ def predict():
 
                 print(
 
-                    "SOURCE: Verified Dataset (ML)"
+                        "SOURCE: Backend Knowledge Base"
 
                 )
 
@@ -1739,12 +1920,20 @@ def predict():
 
                     "response":
 
-                        response,
+                        knowledge_response["response"],
+
+                    "related_questions":
+
+                        knowledge_response["related_questions"],
+
+                    "matching_method":
+
+                        knowledge_response["matching_method"],
 
 
                     "source":
 
-                        "Verified Dataset (ML)"
+                        "Backend Knowledge Base"
 
                 })
 
@@ -1774,45 +1963,21 @@ def predict():
 
 
         # ====================================================
-        # STEP 8: COLLEGE RELATED -> GROQ
+        # STEP 8: COLLEGE RELATED -> LOCAL KNOWLEDGE FALLBACK
         # ====================================================
 
         if college_related:
 
 
-            print(
-
-                "LOW CONFIDENCE BUT COLLEGE RELATED"
-
+            knowledge_response = get_knowledge_response_for_intent(
+                intent
             )
 
-
-            print(
-
-                "GROQ FALLBACK"
-
-            )
+            if knowledge_response:
+                print("LOW CONFIDENCE: USING LOCAL KNOWLEDGE BASE")
 
 
-            groq_response = (
-
-                ask_groq(
-
-                    user_question
-
-                )
-
-            )
-
-
-            print(
-
-                "SOURCE: Groq"
-
-            )
-
-
-            return jsonify({
+                return jsonify({
 
 
                 "success": True,
@@ -1823,9 +1988,9 @@ def predict():
                     user_question,
 
 
-                "intent":
+                    "intent":
 
-                    "general_college_question",
+                        knowledge_response["intent"],
 
 
                 "confidence":
@@ -1839,14 +2004,22 @@ def predict():
                     ),
 
 
-                "response":
+                    "response":
 
-                    groq_response,
+                        knowledge_response["response"],
+
+                    "related_questions":
+
+                        knowledge_response["related_questions"],
+
+                    "matching_method":
+
+                        "low_confidence_knowledge_fallback",
 
 
                 "source":
 
-                    "Groq"
+                        "Backend Knowledge Base"
 
             })
 
