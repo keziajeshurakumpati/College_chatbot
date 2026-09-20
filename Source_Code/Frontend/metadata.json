@@ -1,0 +1,8 @@
+{
+  "name": "Remix College Enquiry",
+  "description": "A smart, high-end college enquiry assistant with interactive categories, real-time query resolution, and modular ML backend support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

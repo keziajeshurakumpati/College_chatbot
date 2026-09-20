@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galgotias University College Enquiry Chatbot | Project Presentation</title>
+<style>
+:root {
+  --navy: #071321;
+  --navy-2: #0b1d31;
+  --panel: rgba(17, 39, 56, .82);
+  --panel-2: rgba(10, 29, 44, .72);
+  --line: rgba(117, 196, 184, .2);
+  --text: #edf8f5;
+  --muted: #a8c1c1;
+  --teal: #42d1bf;
+  --teal-2: #8ae4d0;
+  --green: #75d98e;
+  --amber: #f2c878;
+  --red: #ef9a98;
+  --shadow: 0 24px 80px rgba(0,0,0,.28);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--navy); color: var(--text); font-family: "Aptos", "Segoe UI", sans-serif; }
+body { overflow: hidden; }
+button { font: inherit; }
+.deck { min-height: 100vh; position: relative; isolation: isolate; background: radial-gradient(circle at 78% 16%, rgba(66,209,191,.1), transparent 32%), radial-gradient(circle at 12% 82%, rgba(117,217,142,.07), transparent 28%), var(--navy); }
+.deck::before { content: ""; position: fixed; inset: 0; z-index: -1; opacity: .2; background-image: linear-gradient(rgba(132, 212, 199, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(132, 212, 199, .08) 1px, transparent 1px); background-size: 44px 44px; mask-image: linear-gradient(to bottom, black, transparent 88%); }
+.slides { height: 100vh; position: relative; }
+.slide { position: absolute; inset: 0; padding: 58px 8vw 92px; display: grid; align-content: center; opacity: 0; transform: translateX(24px) scale(.985); pointer-events: none; transition: opacity .42s ease, transform .42s ease; overflow: auto; }
+.slide.active { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+.slide::after { content: ""; position: absolute; width: 420px; height: 420px; right: -180px; bottom: -210px; border: 1px solid rgba(66,209,191,.12); border-radius: 50%; pointer-events: none; }
+.eyebrow { color: var(--teal-2); text-transform: uppercase; letter-spacing: .18em; font-size: 11px; font-weight: 800; margin-bottom: 14px; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { max-width: 1000px; font-size: clamp(38px, 6vw, 84px); line-height: .98; letter-spacing: -.045em; margin-bottom: 24px; }
+h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.02; letter-spacing: -.035em; margin-bottom: 14px; }
+h3 { font-size: 18px; margin-bottom: 8px; }
+.lead { max-width: 760px; color: var(--muted); font-size: clamp(17px, 2vw, 24px); line-height: 1.5; }
+.small { color: var(--muted); font-size: 13px; line-height: 1.55; }
+.accent { color: var(--teal-2); }
+.green { color: var(--green); }
+.amber { color: var(--amber); }
+.rule { width: 88px; height: 4px; border-radius: 9px; background: linear-gradient(90deg, var(--teal), var(--green)); margin: 22px 0 26px; }
+.kicker { display: inline-flex; align-items: center; gap: 9px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 99px; background: rgba(66,209,191,.08); color: var(--teal-2); font-size: 12px; font-weight: 700; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+.card { background: linear-gradient(145deg, rgba(21,49,65,.82), rgba(8,24,38,.78)); border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: 0 12px 34px rgba(0,0,0,.14); }
+.card strong { color: var(--teal-2); }
+.card p:last-child { margin-bottom: 0; }
+.card .icon { width: 34px; height: 34px; display: grid; place-items: center; color: var(--teal); margin-bottom: 14px; }
+.icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.hero-visual { position: absolute; right: 8vw; bottom: 18vh; width: min(33vw, 430px); opacity: .95; }
+.bot-orbit { border: 1px solid rgba(66,209,191,.3); border-radius: 50%; aspect-ratio: 1; display: grid; place-items: center; position: relative; box-shadow: 0 0 0 22px rgba(66,209,191,.025), 0 0 0 44px rgba(66,209,191,.018); }
+.bot-orbit::before, .bot-orbit::after { content: ""; position: absolute; border: 1px dashed rgba(117,217,142,.28); border-radius: 50%; inset: 13%; transform: rotate(27deg); }
+.bot-orbit::after { inset: 26%; transform: rotate(-41deg); }
+.bot-core { width: 42%; aspect-ratio: 1; border-radius: 24%; display: grid; place-items: center; background: linear-gradient(145deg, #193d4b, #0e6c69); border: 1px solid rgba(138,228,208,.65); color: white; box-shadow: 0 0 50px rgba(66,209,191,.26); }
+.bot-core svg { width: 42%; }
+.bullets { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.bullets li { display: flex; gap: 11px; color: var(--muted); line-height: 1.45; }
+.bullets li::before { content: ""; width: 8px; height: 8px; flex: 0 0 8px; margin-top: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px rgba(66,209,191,.45); }
+.compare { width: 100%; border-collapse: collapse; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: rgba(8,25,39,.7); }
+.compare th, .compare td { padding: 15px 18px; text-align: left; border-bottom: 1px solid rgba(117,196,184,.12); vertical-align: top; }
+.compare th { color: var(--teal-2); font-size: 12px; text-transform: uppercase; letter-spacing: .13em; background: rgba(66,209,191,.08); }
+.compare td:first-child { color: #f1b3ae; }
+.compare td:last-child { color: #b8efc6; }
+.arch { display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: center; gap: 20px; }
+.arch-col { display: grid; gap: 10px; }
+.arch-node { padding: 15px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); text-align: center; font-weight: 700; font-size: 14px; }
+.arch-node span { display: block; color: var(--muted); font-size: 11px; font-weight: 500; margin-top: 4px; }
+.arrow { color: var(--teal); text-align: center; font-size: 24px; }
+.branch { padding: 18px; border-left: 3px solid var(--teal); background: rgba(66,209,191,.06); border-radius: 0 13px 13px 0; }
+.branch .arch-node { margin: 8px 0; }
+.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; counter-reset: flow; }
+.flow-item { position: relative; min-height: 130px; padding: 17px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); }
+.flow-item::before { counter-increment: flow; content: counter(flow, decimal-leading-zero); color: var(--teal); font-weight: 900; font-size: 12px; letter-spacing: .12em; }
+.flow-item h3 { margin-top: 15px; font-size: 15px; }
+.flow-item p { color: var(--muted); font-size: 12px; line-height: 1.4; margin-bottom: 0; }
+.tech { min-height: 105px; display: flex; flex-direction: column; justify-content: space-between; }
+.tech b { font-size: 16px; }
+.tech small { color: var(--muted); line-height: 1.35; }
+.intent { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 12px 14px; border-bottom: 1px solid rgba(117,196,184,.14); }
+.intent:last-child { border-bottom: 0; }
+.intent b { color: var(--text); text-transform: capitalize; }
+.intent span { color: var(--teal-2); font-variant-numeric: tabular-nums; }
+.code-flow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.code-box { padding: 14px 16px; border: 1px solid var(--line); border-radius: 11px; background: #061524; color: var(--teal-2); font-family: Consolas, monospace; font-size: 13px; }
+.code-arrow { color: var(--teal); font-size: 20px; }
+.formula { border-left: 3px solid var(--amber); padding: 15px 18px; background: rgba(242,200,120,.07); color: #f7dfad; font-family: Georgia, serif; font-size: 21px; }
+.ui-shell { border: 1px solid rgba(117,196,184,.28); border-radius: 20px; padding: 12px; background: #06131f; box-shadow: var(--shadow); }
+.ui-top { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--line); color: var(--teal-2); font-size: 12px; }
+.ui-body { display: grid; grid-template-columns: 150px 1fr; min-height: 245px; }
+.ui-side { padding: 14px 10px; border-right: 1px solid var(--line); display: grid; align-content: start; gap: 9px; }
+.ui-side div { color: var(--muted); font-size: 10px; padding: 9px; border-radius: 8px; background: rgba(66,209,191,.05); }
+.ui-side div:first-child { color: var(--text); background: rgba(66,209,191,.14); }
+.ui-chat { padding: 16px; display: grid; align-content: space-between; gap: 15px; }
+.bubble { max-width: 80%; padding: 12px; border-radius: 12px; font-size: 11px; line-height: 1.4; }
+.bubble.bot { background: rgba(66,209,191,.12); border: 1px solid rgba(66,209,191,.22); color: #d8f6ee; }
+.bubble.user { justify-self: end; background: #0b513f; color: #e2fff2; }
+.ui-input { padding: 12px; border: 1px solid var(--line); border-radius: 10px; color: #769494; font-size: 11px; }
+.schematic { display: grid; gap: 12px; }
+.schematic-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.schematic-card { min-height: 82px; padding: 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--panel-2); }
+.schematic-card b { color: var(--teal-2); display: block; margin-bottom: 7px; }
+.schematic-card span { color: var(--muted); font-size: 12px; line-height: 1.4; }
+.timeline { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; align-items: stretch; }
+.timeline .step { padding: 13px 8px; border-top: 3px solid var(--teal); background: rgba(66,209,191,.07); border-radius: 8px; font-size: 11px; color: var(--muted); }
+.timeline .step b { display: block; color: var(--text); font-size: 12px; margin-bottom: 7px; }
+.notice { padding: 17px 20px; border: 1px solid rgba(242,200,120,.35); background: rgba(242,200,120,.08); border-radius: 13px; color: #f6dfb0; line-height: 1.5; }
+.footer { position: fixed; inset: auto 0 0; height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; background: rgba(5,17,29,.84); border-top: 1px solid rgba(117,196,184,.15); backdrop-filter: blur(14px); z-index: 5; }
+.brand-mini { color: var(--muted); font-size: 12px; }
+.controls { display: flex; align-items: center; gap: 8px; }
+.controls button { width: 38px; height: 34px; border: 1px solid var(--line); color: var(--teal-2); background: rgba(66,209,191,.06); border-radius: 8px; cursor: pointer; }
+.controls button:hover { background: rgba(66,209,191,.17); }
+.counter { min-width: 72px; text-align: center; color: var(--muted); font-size: 12px; }
+.progress { position: fixed; left: 0; bottom: 67px; height: 3px; background: linear-gradient(90deg, var(--teal), var(--green)); width: 6.25%; z-index: 6; transition: width .35s ease; }
+.table-wrap { overflow-x: auto; }
+@media (max-width: 900px) {
+  body { overflow: auto; }
+  .slide { position: relative; min-height: 100vh; padding: 42px 6vw 100px; display: none; overflow: auto; }
+  .slide.active { display: grid; }
+  .hero-visual { position: relative; right: auto; bottom: auto; width: min(64vw, 330px); margin: 35px auto 0; }
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arch { grid-template-columns: 1fr; }
+  .arrow { transform: rotate(90deg); }
+  .flow { grid-template-columns: repeat(2, 1fr); }
+  .timeline { grid-template-columns: repeat(4, 1fr); }
+  .footer { height: 62px; }
+  .progress { bottom: 61px; }
+}
+@media (max-width: 560px) {
+  .grid-2, .grid-3, .grid-4, .flow, .schematic-row { grid-template-columns: 1fr; }
+  .ui-body { grid-template-columns: 1fr; }
+  .ui-side { display: none; }
+  .timeline { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 42px; }
+  h2 { font-size: 32px; }
+  .brand-mini { display: none; }
+}
+@media print {
+  body { overflow: visible; background: white; color: #122; }
+  .deck { background: white; }
+  .slide, .slide.active { position: relative; display: grid; opacity: 1; transform: none; min-height: 100vh; page-break-after: always; color: #122; }
+  .footer, .progress { display: none; }
+  .card, .arch-node, .flow-item, .schematic-card, .ui-shell, .compare { color: #122; background: #f5fbfa; border-color: #b5d8d0; }
+  .small, .lead, .bullets li, .flow-item p, .tech small, .intent span { color: #486464; }
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<div class="slides">
+
+<section class="slide active" data-title="Title">
+  <div>
+    <span class="kicker">PROJECT PRESENTATION / SYSTEM OVERVIEW</span>
+    <div class="rule"></div>
+    <div class="eyebrow">Galgotias University</div>
+    <h1>College Enquiry<br><span class="accent">Chatbot</span></h1>
+    <p class="lead">AI/NLP-Based College Enquiry Assistant</p>
+    <div class="hero-meta"><span class="kicker">React + TypeScript</span><span class="kicker">Flask API</span><span class="kicker">TF-IDF + Logistic Regression</span></div>
+    <p class="small" style="margin-top:34px">Project presentation · Source-verified implementation overview</p>
+  </div>
+  <div class="hero-visual" aria-hidden="true"><div class="bot-orbit"><div class="bot-core"><svg viewBox="0 0 48 48"><path d="M14 20h20a5 5 0 0 1 5 5v9a5 5 0 0 1-5 5H14a5 5 0 0 1-5-5v-9a5 5 0 0 1 5-5Z"/><path d="M24 20v-5m-3 0h6M16 29h.01M32 29h.01M17 35h14"/><path d="M9 29H5m38 0h-4"/></svg></div></div></div>
+</section>
+
+<section class="slide" data-title="Introduction">
+  <div class="eyebrow">01 / Context</div><h2>A simpler way to ask about university life.</h2><div class="rule"></div>
+  <div class="grid-2">
+    <div><p class="lead">The project is a conversational enquiry assistant for Galgotias University. Students can ask about admissions, courses, fees, eligibility, scholarships, hostel, placements, and examinations in natural language.</p><p class="small">Instead of navigating several information pages, a student submits one question through a chat interface and receives a response selected from verified dataset content, similarity matching, intent classification, or a controlled general-college fallback.</p></div>
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 11h6"/></svg></div><h3>Beginner-friendly interaction</h3><p class="small">Ask “What are the fees?” or “How do I apply?” and receive a readable answer without needing to know the underlying intent labels or model terminology.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Problem Statement">
+  <div class="eyebrow">02 / Need</div><h2>College information is useful only when students can find it.</h2><div class="rule"></div>
+  <div class="grid-2">
+    <div class="card"><h3>Traditional enquiry friction</h3><ul class="bullets"><li>Information is scattered across different pages and departments.</li><li>Students repeatedly search for the same admission, fee, and course details.</li><li>Important topics such as hostel, scholarship, and placement information can be difficult to locate.</li><li>Manual enquiry takes time and is not always available when the student needs it.</li></ul></div>
+    <div class="card"><h3>The opportunity</h3><p class="lead" style="font-size:20px">Create one accessible conversational layer over the college enquiry information.</p><p class="small">The assistant does not replace official records. It provides a guided first response and can direct students toward official information when programme-specific confirmation is required.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Objectives">
+  <div class="eyebrow">03 / Direction</div><h2>Objectives</h2><div class="rule"></div>
+  <div class="grid-3">
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg></div><h3>Quick information</h3><p class="small">Provide fast answers to common college-related questions.</p></div>
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v11H8l-3 3V5Z"/><path d="M8 9h8M8 12h5"/></svg></div><h3>Automate enquiries</h3><p class="small">Reduce repetitive questions handled manually by enquiry staff.</p></div>
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 18V6m0 12h16M8 15l3-4 3 2 4-6"/></svg></div><h3>Classify language</h3><p class="small">Use NLP features and intent probabilities to interpret questions.</p></div>
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3>Relevant responses</h3><p class="small">Retrieve answers from a structured Galgotias University dataset.</p></div>
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M8 21h8M12 18v3"/></svg></div><h3>Student-friendly UI</h3><p class="small">Offer chat, quick topics, history, settings, and responsive layouts.</p></div>
+    <div class="card"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="9"/></svg></div><h3>Consistent experience</h3><p class="small">Connect the React interface to the Flask API contract.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Comparison">
+  <div class="eyebrow">04 / Approach</div><h2>Existing system vs proposed system</h2><div class="rule"></div>
+  <div class="table-wrap"><table class="compare"><thead><tr><th>Existing enquiry approach</th><th>Proposed chatbot experience</th></tr></thead><tbody>
+    <tr><td>Manual searching</td><td>Chat-based interaction</td></tr><tr><td>Multiple webpages</td><td>NLP-based question classification</td></tr><tr><td>Repeated enquiries</td><td>Centralized enquiry experience</td></tr><tr><td>Time-consuming</td><td>Faster first responses</td></tr><tr><td>Less conversational</td><td>Student-friendly conversational interface</td></tr>
+  </tbody></table></div>
+</section>
+
+<section class="slide" data-title="Architecture">
+  <div class="eyebrow">05 / Architecture</div><h2>From a student question to a grounded answer.</h2><div class="rule"></div>
+  <div class="arch">
+    <div class="arch-col"><div class="arch-node">Student<span>Natural-language question</span></div><div class="arrow">↓</div><div class="arch-node">React + TypeScript<span>ChatInput / App / ChatMessage</span></div><div class="arrow">↓</div><div class="arch-node">API Connector<span>JSON POST request</span></div></div>
+    <div class="branch"><div class="arch-node">Flask Backend<span>127.0.0.1:5001/predict</span></div><div class="arrow">↓</div><div class="arch-node">Normalize input<span>Lowercase, punctuation, spacing</span></div><div class="arrow">↓</div><div class="arch-node">Verified retrieval layers<span>Exact → similarity → topic keyword</span></div><div class="arrow">↓</div><div class="arch-node">Domain check → ML<span>TF-IDF → Logistic Regression</span></div></div>
+    <div class="arch-col"><div class="arch-node">Intent / response<span>Eight college enquiry intents</span></div><div class="arrow">↓</div><div class="arch-node">Groq fallback<span>Only for college-related low-confidence queries</span></div><div class="arrow">↓</div><div class="arch-node">JSON response<span>response, intent, confidence, source</span></div><div class="arrow">↓</div><div class="arch-node">Student<span>Displayed in ChatMessage</span></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Technology">
+  <div class="eyebrow">06 / Technology</div><h2>Technologies actually used</h2><div class="rule"></div>
+  <div class="grid-4">
+    <div class="card tech"><b>React</b><small>Component-based student interface.</small></div><div class="card tech"><b>TypeScript</b><small>Typed frontend code and application models.</small></div><div class="card tech"><b>Vite</b><small>Frontend development and production build.</small></div><div class="card tech"><b>Python</b><small>Backend runtime and data/model integration.</small></div>
+    <div class="card tech"><b>Flask</b><small>POST /predict API and local server.</small></div><div class="card tech"><b>Scikit-learn</b><small>TF-IDF and Logistic Regression artifacts.</small></div><div class="card tech"><b>Joblib</b><small>Loads persisted model/vectorizer files.</small></div><div class="card tech"><b>Pandas</b><small>Loads and cleans the CSV dataset.</small></div>
+    <div class="card tech"><b>Groq API</b><small>Controlled general-college fallback.</small></div><div class="card tech"><b>Firebase Auth</b><small>Google sign-in and phone OTP flow.</small></div><div class="card tech"><b>CSS / SVG</b><small>Responsive UI styling and iconography.</small></div><div class="card tech"><b>ReactMarkdown</b><small>Renders formatted assistant answers.</small></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Dataset">
+  <div class="eyebrow">07 / Data</div><h2>A verified enquiry dataset with 634 rows.</h2><div class="rule"></div>
+  <div class="grid-2">
+    <div><div class="card"><h3>Dataset file</h3><p class="accent">galgotias_chatbot_dataset_cleaned_v7.csv</p><p class="small">Columns: ID, Question, Intent, Response, Source_ID, Status. The backend loads, strips, validates, and removes rows missing required fields.</p></div><div class="card" style="margin-top:16px"><h3>How it is used</h3><p class="small">The CSV supports exact question matching, similarity retrieval, and response lookup by intent. The persisted model and vectorizer are loaded separately for inference.</p></div></div>
+    <div class="card"><h3>Intent distribution</h3><div class="intent"><b>Admission</b><span>84</span></div><div class="intent"><b>Hostel</b><span>83</span></div><div class="intent"><b>Placement</b><span>83</span></div><div class="intent"><b>Eligibility</b><span>80</span></div><div class="intent"><b>Scholarship</b><span>78</span></div><div class="intent"><b>Fees</b><span>77</span></div><div class="intent"><b>Courses</b><span>75</span></div><div class="intent"><b>Examination</b><span>74</span></div></div>
+  </div>
+  <p class="small" style="margin-top:16px">Repository note: a training script or reliable train/test split is not present, so no split-based evaluation claim is made.</p>
+</section>
+
+<section class="slide" data-title="TF-IDF">
+  <div class="eyebrow">08 / NLP</div><h2>TF-IDF turns words into useful features.</h2><div class="rule"></div>
+  <div class="code-flow"><div class="code-box">“What are the fees?”</div><div class="code-arrow">→</div><div class="code-box">lowercase + clean text</div><div class="code-arrow">→</div><div class="code-box">TF-IDF vector</div><div class="code-arrow">→</div><div class="code-box">model input</div></div>
+  <div class="grid-2" style="margin-top:28px"><div class="card"><h3>TF · Term Frequency</h3><p class="small">How important a word is within this question. A word appearing in the question contributes to its representation.</p></div><div class="card"><h3>IDF · Inverse Document Frequency</h3><p class="small">How unique a word is across the dataset. Rare, informative terms carry more distinguishing value than common terms.</p></div></div>
+  <div class="formula" style="margin-top:20px">TF-IDF = term importance in this question × word uniqueness across the dataset</div>
+</section>
+
+<section class="slide" data-title="Logistic Regression">
+  <div class="eyebrow">09 / Model</div><h2>Logistic Regression predicts the enquiry intent.</h2><div class="rule"></div>
+  <div class="flow"><div class="flow-item"><h3>Input question</h3><p>Student text arrives through the Flask endpoint.</p></div><div class="flow-item"><h3>TF-IDF features</h3><p>The vectorizer represents the cleaned text numerically.</p></div><div class="flow-item"><h3>Intent probabilities</h3><p>The persisted Logistic Regression model scores each class.</p></div><div class="flow-item"><h3>Predicted intent</h3><p>The strongest class can retrieve a verified response when confidence is trusted.</p></div></div>
+  <div class="grid-2" style="margin-top:24px"><div class="card"><h3>Eight model classes</h3><p class="small">admission · courses · eligibility · examination · fees · hostel · placement · scholarship</p></div><div class="card"><h3>Confidence guardrail</h3><p class="small">The backend keeps <strong>ML_THRESHOLD = 0.60</strong>. Lower-confidence college-related questions can use the Groq fallback; unrelated questions are restricted.</p></div></div>
+  <p class="small" style="margin-top:16px">This is classical machine learning, not deep learning.</p>
+</section>
+
+<section class="slide" data-title="Working">
+  <div class="eyebrow">10 / Runtime flow</div><h2>Chatbot working sequence</h2><div class="rule"></div>
+  <div class="timeline"><div class="step"><b>01</b>Student enters a question.</div><div class="step"><b>02</b>React sends JSON to Flask.</div><div class="step"><b>03</b>Backend normalizes text.</div><div class="step"><b>04</b>TF-IDF represents the question.</div><div class="step"><b>05</b>Logistic Regression predicts intent.</div><div class="step"><b>06</b>Dataset response is selected.</div><div class="step"><b>07</b>Groq handles college-related low-confidence cases.</div><div class="step"><b>08</b>React renders the response.</div></div>
+  <div class="card" style="margin-top:24px"><h3>Important routing behavior</h3><p class="small">The actual backend first checks common conversational phrases, then exact and similarity matches, topic keywords, domain relevance, ML confidence, and finally the Groq fallback. “Hi” is not treated as an ML intent; “hi, what are the fees?” continues as an enquiry.</p></div>
+</section>
+
+<section class="slide" data-title="Features">
+  <div class="eyebrow">11 / Product surface</div><h2>Implemented features</h2><div class="rule"></div>
+  <div class="grid-3">
+    <div class="card"><h3>Authentication</h3><p class="small">Firebase Authentication integration with Google sign-in and phone OTP.</p></div><div class="card"><h3>Preferred name</h3><p class="small">Preferred-name capture and browser persistence for a more personal greeting.</p></div><div class="card"><h3>Chat sessions</h3><p class="small">Saved sessions, new enquiry, selection, rename, search, delete, and Markdown transcript export.</p></div>
+    <div class="card"><h3>Conversation controls</h3><p class="small">Quick topic chips, microphone input when supported, send/receive sound effects, and voice read-aloud.</p></div><div class="card"><h3>Answer actions</h3><p class="small">Copy, listen, related follow-up questions, Markdown formatting, tables, and prospectus access.</p></div><div class="card"><h3>Responsive themes</h3><p class="small">Dark/light appearance settings and responsive desktop/mobile layouts.</p></div>
+    <div class="card"><h3>Admission Desk</h3><p class="small">Contact, email, phone, location, and support-oriented college information surfaces.</p></div><div class="card"><h3>Local API mode</h3><p class="small">The current frontend configuration points to the local Flask API at 127.0.0.1:5001.</p></div><div class="card"><h3>Safe fallback</h3><p class="small">Unrelated questions receive a domain restriction response instead of invented university facts.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="User Interface">
+  <div class="eyebrow">12 / Interface</div><h2>A student-facing chat workspace.</h2><div class="rule"></div>
+  <div class="grid-2">
+    <div class="ui-shell"><div class="ui-top"><span>Galgotias University</span><span>Student profile · Settings</span></div><div class="ui-body"><div class="ui-side"><div>New enquiry</div><div>Admissions</div><div>Courses</div><div>Fees</div><div>Hostel</div><div>History</div></div><div class="ui-chat"><div><div class="bubble bot">Hello! How can I help you with your Galgotias University enquiry?</div><div class="bubble user">What are the eligibility criteria?</div><div class="bubble bot">Eligibility depends on the programme. Please check the official requirements for your chosen course.</div></div><div class="ui-input">Ask about admissions, courses, fees, hostel...</div></div></div></div>
+    <div class="schematic"><div class="notice"><strong>Asset note:</strong> No screenshot/image files were found in the project workspace. This is a source-derived interface schematic, not a fabricated screenshot.</div><div class="schematic-row"><div class="schematic-card"><b>Login screen</b><span>Firebase Google sign-in and phone OTP flows are implemented in LoginPage.tsx.</span></div><div class="schematic-card"><b>Chat screen</b><span>Header, sidebar, empty state, chat messages, quick chips, and ChatInput compose the main workspace.</span></div><div class="schematic-card"><b>History drawer</b><span>Search, select, rename, export, delete, and start-new-enquiry actions are implemented.</span></div><div class="schematic-card"><b>Settings / brochure</b><span>Theme, sound, voice, support, clear history, admission desk, and prospectus surfaces are present.</span></div></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Evaluation">
+  <div class="eyebrow">13 / Evidence</div><h2>Evaluation: what is available, and what is not.</h2><div class="rule"></div>
+  <div class="grid-2"><div class="card"><h3>Verified implementation facts</h3><ul class="bullets"><li>Persisted model artifact: <strong>LogisticRegression</strong>.</li><li>Persisted vectorizer artifact: <strong>TfidfVectorizer</strong>.</li><li>Eight intent classes are stored in intent_classes.pkl.</li><li>Backend confidence threshold is 0.60.</li><li>Dataset contains 634 cleaned rows.</li></ul></div><div class="notice"><strong>Evaluation metrics are to be calculated from the final training/test split.</strong><br><br>No reliable accuracy, precision, recall, F1-score, confusion matrix, or intent-wise held-out evaluation results were found in the repository. Numerical metrics are intentionally not invented for this presentation.</div></div>
+</section>
+
+<section class="slide" data-title="Testing">
+  <div class="eyebrow">14 / Verification</div><h2>Testing the real response paths</h2><div class="rule"></div>
+  <div class="grid-2"><div class="card"><h3>Valid college questions</h3><ul class="bullets"><li>“What courses are available?” → dataset similarity / courses.</li><li>“What is the admission process?” → verified admission response.</li><li>“What is the hostel fee?” → hostel topic response.</li><li>“What scholarships are available?” → scholarship response.</li></ul></div><div class="card"><h3>Conversational messages</h3><ul class="bullets"><li>“Hi”, “thanks”, “okay”, and “bye” → common-message handler.</li><li>Mixed messages such as “thanks, what is the hostel fee?” continue to enquiry routing.</li><li>“Wow”, “nice”, “great”, and “amazing” → short casual reactions.</li></ul></div><div class="card"><h3>Out-of-domain questions</h3><p class="small">“What is the weather?” and “Tell me a joke” receive a polite Galgotias University domain restriction response.</p></div><div class="card"><h3>Checks performed</h3><p class="small">Local Flask API smoke tests, backend Python syntax checks, conversational regression tests, frontend TypeScript validation, and Vite production build validation were performed during project verification.</p></div></div>
+</section>
+
+<section class="slide" data-title="Conclusion & Future Scope">
+  <div class="eyebrow">16 / Closing</div><h2>A focused conversational layer for college enquiries.</h2><div class="rule"></div>
+  <div class="grid-2"><div><p class="lead">The project combines a React student interface with a Flask API, a structured university enquiry dataset, and classical NLP classification.</p><p class="small">It provides a practical path from a natural-language question to a grounded response, while keeping unrelated requests outside the college information domain.</p><div class="hero-meta"><span class="kicker">Conversational UI</span><span class="kicker">Verified retrieval</span><span class="kicker">Intent classification</span></div></div><div class="card"><h3>Current implementation</h3><ul class="bullets"><li>React + TypeScript frontend</li><li>Flask backend API</li><li>TF-IDF + Logistic Regression</li><li>634-row Galgotias enquiry dataset</li><li>Controlled Groq fallback</li></ul></div></div>
+  <h3 style="margin-top:28px">FUTURE SCOPE</h3>
+  <div class="grid-3"><div class="card"><h3>Data quality</h3><p class="small">Continue deduplication, wording coverage, source review, and programme-specific maintenance.</p></div><div class="card"><h3>Evaluation</h3><p class="small">Create a documented train/test split and report accuracy, precision, recall, F1-score, and confusion matrix.</p></div><div class="card"><h3>Language access</h3><p class="small">Add multilingual support for a broader student audience.</p></div><div class="card"><h3>Information depth</h3><p class="small">Expand verified content across departments, facilities, services, and student life.</p></div><div class="card"><h3>Context</h3><p class="small">Improve multi-turn context while preserving grounded response behavior.</p></div><div class="card"><h3>Administration</h3><p class="small">Consider analytics and an admin dashboard for enquiry trends and content maintenance.</p></div></div>
+  <p class="small" style="margin-top:18px">These are future-scope ideas, not claims about current functionality.</p>
+</section>
+
+</div>
+<div class="progress" id="progress"></div>
+<footer class="footer"><div class="brand-mini">Galgotias University College Enquiry Chatbot</div><div class="controls"><button id="prev" title="Previous slide" aria-label="Previous slide">←</button><span class="counter" id="counter">01 / 16</span><button id="next" title="Next slide" aria-label="Next slide">→</button><button id="fullscreen" title="Fullscreen (F)" aria-label="Fullscreen">⛶</button></div></footer>
+</div>
+<script>
+(() => {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  let current = 0;
+  function show(index) {
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    progress.style.width = ((current + 1) / slides.length * 100) + '%';
+    document.title = (slides[current].dataset.title || 'Slide') + ' | Galgotias University College Enquiry Chatbot';
+  }
+  function next() { show(current + 1); }
+  function previous() { show(current - 1); }
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', previous);
+  document.getElementById('fullscreen').addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'PageDown') { event.preventDefault(); next(); }
+    if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); previous(); }
+    if (event.key === 'Home') { event.preventDefault(); show(0); }
+    if (event.key === 'End') { event.preventDefault(); show(slides.length - 1); }
+    if (event.key.toLowerCase() === 'f') { event.preventDefault(); document.getElementById('fullscreen').click(); }
+  });
+  let touchStart = null;
+  document.addEventListener('touchstart', e => { touchStart = e.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => { if (touchStart === null) return; const delta = e.changedTouches[0].clientX - touchStart; if (Math.abs(delta) > 50) delta < 0 ? next() : previous(); touchStart = null; }, { passive: true });
+  show(0);
+})();
+</script>
+</body>
+</html>

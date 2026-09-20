@@ -1,0 +1,11 @@
+See README.md for complete setup instructions. Start backend first, then frontend.
+AUTHENTICATION NOTE
+-------------------
+The frontend includes Firebase Authentication for Google sign-in and phone OTP.
+Google sign-in can be used for the project demo. Real phone SMS may require Firebase billing.
+The Firebase web configuration is included in Source_Code/Frontend/src/firebase.ts.
+
+Frontend dependencies:
+  cd Source_Code/Frontend
+  npm install
+  npm run dev
