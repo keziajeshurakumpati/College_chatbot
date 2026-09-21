@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { ChatSession } from '../types';
 import { User } from 'firebase/auth';
+import { AdmissionDeskCard } from './AdmissionDeskCard';
 
 interface HistoryDrawerProps {
   isOpen: boolean;
@@ -259,6 +260,10 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
               );
             })
           )}
+        </div>
+
+        <div className="mt-3">
+          <AdmissionDeskCard isDark={isDark} />
         </div>
 
         {currentUser && (
